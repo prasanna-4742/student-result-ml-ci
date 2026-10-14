@@ -79,7 +79,7 @@ jobs:
               echo "Application is ready."
               exit 0
             fi
-            echo "Waiting for application... attempt $i"
+            echo "Waiting for application.... attempt $i"
             sleep 2
           done
           docker logs student-result-ml-container
