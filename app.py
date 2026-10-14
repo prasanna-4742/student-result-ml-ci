@@ -12,10 +12,22 @@ def load_model():
         raise FileNotFoundError("student_result_model.pkl was not found. Run the training pipeline first.")
     return joblib.load(MODEL_PATH)
 
+# Root endpoint (optional health/info)
 @app.get("/")
-def health_check():
+def root_check():
     return jsonify({"status": "ok", "service": "student-result-prediction"})
 
+# Dedicated health endpoint for CI/CD
+@app.get("/health")
+def health_endpoint():
+    model_exists = MODEL_PATH.exists()
+    return jsonify({
+        "status": "ok",
+        "service": "student-result-prediction",
+        "model_file": model_exists
+    }), 200
+
+# Prediction endpoint
 @app.post("/predict")
 def predict():
     data = request.get_json(silent=True)
