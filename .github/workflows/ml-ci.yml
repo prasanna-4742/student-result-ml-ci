@@ -108,8 +108,20 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Tag Docker image
+      - name: Tag Docker image (commit SHA)
         run: docker tag student-result-ml:${{ github.sha }} ghcr.io/${{ github.repository }}/student-result-ml:${{ github.sha }}
 
-      - name: Push Docker image
+      - name: Push Docker image (commit SHA)
         run: docker push ghcr.io/${{ github.repository }}/student-result-ml:${{ github.sha }}
+
+      # 🔹 Practical-8: Tag and Push Docker image with version and latest
+      - name: Tag Docker image (v1 and latest)
+        run: |
+          docker tag student-result-ml:${{ github.sha }} ghcr.io/${{ github.repository }}/student-result-prediction:v1
+          docker tag student-result-ml:${{ github.sha }} ghcr.io/${{ github.repository }}/student-result-prediction:latest
+
+      - name: Push Docker image (v1)
+        run: docker push ghcr.io/${{ github.repository }}/student-result-prediction:v1
+
+      - name: Push Docker image (latest)
+        run: docker push ghcr.io/${{ github.repository }}/student-result-prediction:latest
